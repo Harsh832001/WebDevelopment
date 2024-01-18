@@ -1,0 +1,89 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-image: url("/Related-CSS/Project/img/very-large-flamingo.jpg");
+    height: 400px;
+    width: 400px;
+
+}
+
+/* nav { */
+    /* display: flex; */
+/* } */
+
+ul {
+    align-items: center;
+    align-content: center;
+    display: flex;
+}
+
+li {
+    color: white;
+    font-weight: bolder;
+    padding-left: 35px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    align-content: center;
+    padding-top: 20px;
+    text-decoration: none;
+    /* border-radius: 30px;
+    border: 2px solid wheat;
+    width: 150px;
+    height: 30px; */
+    /* align-items: center; */
+    /* align-content: center; */
+    /* padding-right: 200px; */
+}
+
+.save {
+    border: 2px solid wheat;
+    border-radius: 30px;
+    width: 90px;
+    height: 20px;
+    display: inline-flex;
+    align-items: flex-end;
+    align-content: flex-end;
+    /* padding-top: 100px; */
+    /* padding-left: 100px; */
+    padding: 10px;
+    padding-left: 25px;
+}
+
+.dropdown {
+    padding-left: 10px;
+}
+
+main {
+
+    height: 85vh;
+}
+
+footer {
+    color: white;
+    /* display: flex; */
+    /* align-items: flex-end;
+    align-content: flex-end; */
+    /* padding:200px; */
+    display: flex;
+    background-color: black;
+    width:100vw;
+    flex-direction: row-reverse;        
+
+}
+
+.upload span{
+    /* padding-left: 75vw; */
+    /* border-radius: 30px; */
+    /* border: 2px solid white; */
+    /* width: 20px;x */
+    display: flex;
+    padding-left: 75vw;
+border-radius: 30px;
+border: 2px solid white;
+width: 20px;
+    
+}

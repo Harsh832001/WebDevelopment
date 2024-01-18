@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>this is the pratice</h3>
+    <p id="demo"></p>
+    <script>
+
+        function School(name,rollno,marks,age){
+            this.name = name;
+            this.rollno = rollno;
+            this.marks = marks;
+            this.age = age;
+        }
+
+
+        var studentone = new School("Harsh",8,99,21);
+        var studentsecond = new School("Chauhan",9,98,22);
+
+        document.getElementById("demo").innerHTML = "First Student Information is : " + studentone.name + ", Roll No: " + studentone.rollno + ", Marks: " + studentone.marks + ", Age: " + studentone.age;
+        document.getElementById("demo").innerHTML += "<br>Second Student Information is : " + studentsecond.name + ", Roll No: " + studentsecond.rollno + ", Marks: " + studentsecond.marks + ", Age: " + studentsecond.age;
+    </script>
+</body>
+</html>

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="phonon.in">
+<script src="/authorization-server/authorization.js"></script>
+
+<script type="text/javascript"  nonce="8IBTHwOdqNKAWeKl7plt8g==">
+	var token = null, userToken = null;
+	var hashParams = window.location.hash.split(/(\?|&|#)/).reduce(
+			function(result, item) {
+				var parts = item.split('=');
+				var value = "";
+				for (var i = 1; i < parts.length; i++) {
+					if (parts[i] == "") {
+						value = value + "=";
+					} else {
+						value = value + parts[i];
+					}
+				}
+				result[parts[0]] = value;
+				return result;
+			}, {});
+
+	if (hashParams) {
+		token = hashParams['token'] || hashParams['/token'];
+		userToken = hashParams['usertoken'] || hashParams['/usertoken'];
+	}
+
+	var accessToken = authorize('jsclient');
+	var servicesUrl = "/kairos-services/";
+	var utilsUrl = "/kairos-utils/";
+	var reportUrl = "/kairos-reports/";
+	var apiServiceUrl = "/kairos-apis/";
+	var defaultPathForFile = "filepath=/home/PHONON/";
+	
+	
+</script>
+<!-- <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> -->
+<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<!-- Page title set in pageTitle directive -->
+<title page-title>Phonon Central</title>
+<!-- build:css resources/css/vendor-@@rev.min.css -->
+<!-- Bootstrap -->
+<link href="resources/theme/css/bootstrap.min.css" rel="stylesheet">
+<!-- Plugins -->
+<!-- <link href="resources/theme/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
+<link href="resources/theme/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+ -->
+
+<link href="bower_components/bootstrap-sweetalert/dist/sweetalert.css"
+	rel="stylesheet" />
+<link href="bower_components/angular-toastr/dist/angular-toastr.min.css"
+	rel="stylesheet" />
+<link href="bower_components/chart.js/dist/Chart.min.css"
+	rel="stylesheet" />
+<link href="resources/theme/css/plugins/ui-select/select.min.css"
+	rel="stylesheet" />
+<link href="resources/theme/css/plugins/dataTables/datatables.min.css"
+	rel="stylesheet" />
+<link
+	href="resources/theme/css/plugins/dataTables/fixedColumns.dataTables.min.css"
+	rel="stylesheet" />
+<link href="resources/theme/css/plugins/switchery/switchery.css"
+	rel="stylesheet" />
+<link
+	href="resources/theme/css/plugins/ngTags/ng-tags-input-custom.min.css"
+	rel="stylesheet" />
+<link
+	href="resources/theme/css/plugins/angular-notify/angular-notify.min.css"
+	rel="stylesheet" />
+<link href="resources/theme/css/plugins/summernote/summernote.css"
+	rel="stylesheet" />
+<link href="bower_components/bootstrap-fileinput/css/fileinput.min.css"
+	rel="stylesheet" />
+<link
+	href="bower_components/bootstrap-fileinput/themes/explorer/theme.min.css"
+	rel="stylesheet" />
+<link href="resources/theme/css/plugins/colorpicker/colorpicker.css"
+	rel="stylesheet" />
+<link
+	href="resources/theme/css/plugins/dualListbox/bootstrap-duallistbox.min.css"
+	rel="stylesheet" />
+<link href="resources/theme/css/plugins/clockpicker/clockpicker.css"
+	rel="stylesheet" />
+<link href="resources/theme/css/plugins/textSpinners/spinners.css"
+	rel="stylesheet" />
+<link
+	href="bower_components/jQuery-QueryBuilder/dist/css/query-builder.default.min.css"
+	rel="stylesheet" />
+<link
+	href="resources/plugins/eonasdan-bootstrap-datetimepicker/distribution/css/bootstrap-datetimepicker.min.css"
+	rel="stylesheet" />
+<link
+	href="resources/theme/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css"
+	rel="stylesheet" />
+<link
+	href="resources/theme/css/plugins/daterangepicker/daterangepicker-bs3.css"
+	rel="stylesheet" />
+<link href="resources/theme/css/plugins/steps/jquery.steps.css"
+	rel="stylesheet" />
+<!-- Fonts -->
+<link href="resources/fonts/icomoon/css/icomoon.css" rel="stylesheet" />
+<link href="resources/theme/font-awesome/css/font-awesome.css"
+	rel="stylesheet">
+<link href="resources/css/nav-tab.css" rel="stylesheet" />
+<!-- endbuild -->
+<!-- Theme -->
+<!-- Main Inspinia CSS files -->
+<link href="resources/theme/css/animate.css" rel="newer stylesheet">
+<link href="resources/theme/css/style.css" rel="newer stylesheet">
+<!-- build:css resources/css/app-@@rev.min.css rel="newest stylesheet" -->
+<link href="resources/css/webui.css" rel="newest stylesheet">
+<link href="resources/css/widgets.css" rel="stylesheet" />
+<link href="bower_components/intl-tel-input/build/css/intlTelInput.css"
+	rel="stylesheet" />
+<!-- ladda -->
+<link rel="stylesheet"
+	href="bower_components/ladda/dist/ladda-themeless.min.css">
+<!-- endbuild -->
+</head>
+
+<body ng-app="app" class="md-skin fixed-sidebar" ng-strict-di>
+	<div id="wrapper" style="margin: 50px 0px 1px 0px;padding: 0px 10px 0px 0px;">
+		<nav class="navbar-default navbar-static-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul side-navigation class="nav metismenu" id="side-menu">
+					<li class="nav-header">
+						<div class="dropdown profile-element">
+							<span>
+								<img src="resources/images/phononlogo_white.png" width="150px"
+									height="60px" />
+							</span>
+						</div>
+						<div class="logo-element">IN+</div>
+					</li>
+					<li ng-class="{active: $currentState.startsWith('app.home')}">
+						<a ui-sref="app.home">
+							<i class="fa fa-home"></i>
+							<span>Home</span>
+						</a>
+					</li>
+					<li ng-hide="isSubordinateAccount && !permissions.includes('app.campaign')">
+						<a>
+							<i class="fa fa-bullhorn"></i>
+							<span class="nav-label">Campaigns</span>
+							<span class="fa arrow"></span>
+						</a>
+						<ul class="nav nav-second-level" style="padding-left: 15px">
+							<li ng-class="{active: $currentState.startsWith('app.flow')}">
+								<a ui-sref="app.flow"> <i class="fa fa-sitemap"></i> <span>Flows</span>
+							</a>
+							</li>
+							<li
+										ng-class="{active: $currentState.startsWith('app.obddashboard')}">
+										<a ui-sref="app.obddashboard"> <i
+											class="fa fa-television + fa-upload"></i> <span>Outbound Request
+												Dashboard</span>
+									</a>
+							</li>
+							<li ng-class="{active: $currentState.startsWith('app.revokeCampaign')}">
+						<a ui-sref="app.revokeCampaign">
+							<i class="fa fa-bullhorn"></i>
+							<span>Revoke Campaign</span>
+						</a>
+					 </li>
+							</ul>
+							<li ng-hide="isSubordinateAccount && !permissions.includes('app.call.center')"><a href="#"> <i class="fa fa-group + fa-headphones"></i> <span
+									class="nav-label">Call Centre Setup</span> <span
+									class="fa arrow"></span>
+							</a>
+								<ul class="nav nav-third-level" style="padding-left: 15px">
+									<li ng-class="{active: $currentState.startsWith('app.queue')}">
+										<a ui-sref="app.queue"> <i class="fa fa-sitemap fa-rotate-270"></i>
+											<span>Call Queues</span>
+									</a>
+									</li>
+									<li
+										ng-class="{active: $currentState.startsWith('app.disposition')}">
+										<a ui-sref="app.disposition"> <i class="fa fa-wpforms"></i>
+											<span>Dispositions</span>
+									</a>
+									</li>
+									<!-- <li ng-class="{active: $currentState.startsWith('app.additionalFields')}">
+                                        <a ui-sref="app.additionalFields"> <i class="fa fa-book"></i>
+                                            <span>Additional Fields</span>
+                                        </a>
+                                    </li> -->
+									<li
+										ng-class="{active: $currentState.startsWith('app.pausecode')}">
+										<a ui-sref="app.pausecode"> <i class="fa fa-pause-circle"></i>
+											<span>Agent Breaks</span>
+									</a>
+									</li>
+									<li
+										ng-class="{active: $currentState.startsWith('app.directdial')}">
+										<a ui-sref="app.directdial"> <i class="icomoon-dial-pad">
+										</i> <span>Direct Dial Agents</span>
+									</a>
+									</li>
+									<li ng-class="{active: $currentState.startsWith('app.agents')}">
+										<a ui-sref="app.agents">
+											<i class="fa fa-tablet"></i>
+											<span> Dynamic Agents</span>
+										</a>
+									</li>
+									<li
+										ng-class="{active: $currentState.startsWith('app.agentGroup')}">
+										<a ui-sref="app.agentGroup">
+											<i class="fa fa-group"></i>
+											<span>Agent Groups</span>
+										</a>
+									</li>
+								</ul></li>
+								<li ng-hide="isSubordinateAccount && !permissions.includes('app.notifications')" ><a href="#"> <i class="fa fa-bell"></i> <span
+									class="nav-label">Emergency Notifications</span> <span class="fa arrow"></span>
+							</a>
+								<ul class="nav nav-third-level" style="padding-left: 15px">
+									<li
+										ng-class="{active: $currentState.startsWith('app.sendnotifications')}">
+										<a ui-sref="app.sendnotifications"> <i
+											class="fa fa-bullhorn"> </i> <span>Send Notifications</span>
+									</a>
+									</li>
+									<li
+										ng-class="{active: $currentState.startsWith('app.addressbook')}">
+										<a ui-sref="app.addressbook"> <i class="fa fa-address-book"></i>
+											<span>Contact List</span>
+									</a>
+									</li>
+									<li ng-class="{active: $currentState.startsWith('app.labels')}">
+										<a ui-sref="app.labels"> <i class="fa fa-book"> </i> <span>Contract Groups</span>
+									</a>
+									</li>
+								</ul></li>
+								<li ng-hide="isSubordinateAccount && !permissions.includes('app.reports')"><a href="#"> <i class="fa fa-area-chart"></i> <span
+									class="nav-label">Reports & Dashboard</span> <span class="fa arrow"></span>
+							</a>
+								<ul class="nav nav-third-level" style="padding-left: 15px">
+									<li style="border-left-width: 0px;"
+										ng-class="{active: $currentState.startsWith('app.reports')}">
+										<a ui-sref="app.reports"> <i class="fa fa-search"></i>
+											<span>Reports</span>
+									</a>
+									</li>
+									<li style="border-left-width: 0px;"
+										ng-class="{active: $currentState.startsWith('app.downloadReports')}">
+										<a ui-sref="app.downloadReports"> <i
+											class="fa fa-table"></i> <span>Advance Reports</span>
+									</a>
+									</li>
+									<li style="border-left-width: 0px;"
+										ng-class="{active: $currentState.startsWith('app.emailReports')}">
+										<a ui-sref="app.emailReports"> <i
+											class="fa fa-envelope-square"></i> <span>Email Reports</span>
+									</a>
+									</li>
+									
+									<!-- <li style="border-left-width: 0px;"
+										ng-class="{active: $currentState.startsWith('app.configureReports')}">
+										<a ui-sref="app.configureReports"> <i class="fa fa-wrench"></i>
+											<span>Configure Reports</span>
+									</a>
+									</li>
+									<li style="border-left-width: 0px;"
+										ng-class="{active: $currentState.startsWith('app.downloadPreGeneratedReports')}">
+										<a ui-sref="app.downloadPreGeneratedReports">
+											<i class="fa fa-download"></i>
+											<span>Download Pre Generated Reports</span>
+										</a>
+									</li> -->
+									<li style="border-left-width: 0px;"
+										ng-class="{active: $currentState.startsWith('app.agentSupervisorDetails')}">
+										<a ui-sref="app.agentSupervisorDetails"> <i
+											class="fa fa-dashboard"></i> <span>Live Agent Status</span>
+									</a>
+									</li>
+								</ul></li>
+
+							<li class="divider"></li>
+					<li
+						ng-hide="isSubordinateAccount && !permissions.includes('app.whatsApp')">
+						<a href="#"> <i class="fa fa-whatsapp"></i> <span
+							class="nav-label">WhatsApp</span> <span class="fa arrow"></span>
+					</a>
+						<ul class="nav nav-second-level collapse"
+							style="padding-left: 15px">
+							<li ng-class="{active: $currentState.startsWith('app.whatsApp')}">
+								<a ui-sref="app.whatsApp"> <i class="fa fa-comment"></i> <span>WhatsApp
+										Business Account</span>
+							</a>
+							</li>
+						</ul>
+					</li>
+					<li ng-hide="isSubordinateAccount && !permissions.includes('app.setup')" >
+						<a href="#">
+							<i class="fa fa-cog"></i>
+							<span class="nav-label">Setup</span>
+							<span class="fa arrow"></span>
+						</a>
+						<ul class="nav nav-second-level collapse"
+							style="padding-left: 15px">
+							<li
+								ng-class="{active: $currentState.startsWith('app.whitelist')}">
+								<a ui-sref="app.whitelist"> <i class="fa fa-unlock-alt"></i> <span>Whitelist</span>
+							</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.blacklist')}">
+								<a ui-sref="app.blacklist"> <i class="fa fa-ban"></i> <span>Blacklist</span>
+							</a>
+							</li>
+							<li ng-class="{active: $currentState.startsWith('app.prompts')}">
+								<a ui-sref="app.prompts"> <i class="fa fa-music"></i> <span>Prompts</span>
+							</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.grammar')}">
+								<a ui-sref="app.advanced.grammar">
+									<i class="fa fa-quote-left"></i>
+									<span>Grammar</span>
+								</a>
+							</li>
+							<li ng-class="{active: $currentState.startsWith('app.did')}">
+								<a ui-sref="app.did">
+									<i class="fa fa-fax"></i>
+									<span>DIDs</span>
+								</a>
+							</li>
+							<li ng-class="{active: $currentState.startsWith('app.email')}">
+								<a ui-sref="app.email">
+									<i class="fa fa-at"></i>
+									<span>Email</span>
+								</a>
+							</li>
+							<li ng-class="{active: $currentState.startsWith('app.sms')}">
+								<a ui-sref="app.sms">
+									<i class="fa fa-comment"></i>
+									<span>SMS</span>
+								</a>
+							</li>
+							<li ng-class="{active: $currentState.startsWith('app.storage')}">
+								<a ui-sref="app.storage">
+									<i class="fa fa-mixcloud"></i>
+									<span>Recording Location</span>
+								</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.webhook')}">
+								<a ui-sref="app.advanced.webhook">
+									<i class="fa fa-exchange"></i>
+									<span>Webhook</span>
+								</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.cloud')}">
+								<a ui-sref="app.advanced.cloud">
+									<i class="fa fa-skyatlas"></i>
+									<span>Clouds Accounts</span>
+								</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.nplEngine')}">
+								<a ui-sref="app.advanced.nplEngine">
+									<i class="fa fa-microchip"></i>
+									<span>NLP Engine</span>
+								</a>
+							</li>
+							
+							<li ng-class="{active: $currentState.startsWith('app.transcription.viewmapping')}">
+								<a ui-sref="app.transcription.viewmapping">
+									<i class="fa fa-group"></i>
+									<span>Transcription</span>
+								</a>
+							</li>
+														
+						</ul>
+					</li>
+							
+					</li>
+					<li class="divider"></li>
+					<li ng-hide="isSubordinateAccount && !permissions.includes('app.advanced')" >
+						<a href="#">
+							<i class="fa fa-plus-circle"></i>
+							<span class="nav-label">Advance</span>
+							<span class="fa arrow"></span>
+						</a>
+						<ul class="nav nav-second-level" style="padding-left: 15px">
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.users')}">
+								<a ui-sref="app.advanced.users">
+									<i class="fa fa-group"></i>
+									<span>Users</span>
+								</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.agentUISetup')}">
+								<a ui-sref="app.advanced.agentUISetup">
+									<i class="fa fa-group"></i>
+									<span>Agent UI Setup</span>
+								</a>
+							</li>
+							<li ng-class="{active: $currentState.startsWith('app.advanced.roles')}">
+                                <a ui-sref="app.advanced.roles">
+                                    <i class="fa fa-black-tie"></i>
+                                    <span>Roles</span>
+                                </a>
+                            </li>
+                           <li ng-class="{active: $currentState.startsWith('app.advanced.activity')}">
+								<a ui-sref="app.advanced.activity">
+									<i class="fa fa-file-text"></i>
+									<span>Activity Log</span>
+								</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.crm')}">
+								<a ui-sref="app.advanced.crm">
+									<i class="fa fa-bolt"></i>
+									<span>Event Webhooks</span>
+								</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.zoho')}">
+								<a ui-sref="app.advanced.zoho"> <i class="fa fa-chain"></i>
+									<span>Integration</span>
+							</a>
+							</li>
+						</ul>
+					</li>
+					
+					<!-- <li>
+						<a href="#">
+							<i class="fa fa-desktop"></i>
+							<span class="nav-label">Coming Soon</span>
+							<span class="pull-right label label-primary">SPECIAL</span>
+						</a>
+						<ul class="nav nav-second-level collapse"
+							style="padding-left: 15px">
+							<li ui-sref-active="active">
+								<a ui-sref="test">
+									<i class="fa fa-wechat"></i>
+									<span>Chat</span>
+								</a>
+							</li>
+							<li ui-sref-active="active">
+								<a ui-sref="test">
+									<i class="fa fa-handshake-o"></i>
+									<span>Contacts</span>
+								</a>
+							</li>
+							<li ui-sref-active="active">
+								<a ui-sref="test">
+									<i class="fa fa-twitter"></i>
+									<span>Social Media</span>
+								</a>
+							</li>
+							<li ui-sref-active="active">
+								<a ui-sref="test">
+									<i class="fa fa-key"></i>
+									<span>API Key</span>
+								</a>
+							</li>
+							<li ng-class="{active: $currentState.startsWith('temp')}">
+								<a ui-sref="test">
+									<i class="fa fa-shopping-bag"></i>
+									<span>Market Place</span>
+								</a>
+							</li>
+						</ul>
+					</li> -->
+					<li>
+						<a href="#">
+							<i class="fa fa-th-large"></i>
+							<span class="nav-label">More</span>
+							<span class="fa arrow"></span>
+						</a>
+						<ul class="nav nav-second-level" style="padding-left: 15px">
+							<li
+								ng-class="{active: $currentState.startsWith('app.ecommerce')}">
+								<a ui-sref="app.ecommerce"> <i class="fa fa-shopping-cart"></i>
+									<span>E-commerce</span>
+							</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.flowVariable')}">
+								<a ui-sref="app.advanced.flowVariable">
+									<i class="fa fa-cubes"></i>
+									<span>Flow Variable</span>
+								</a>
+							</li>
+							<li
+								ng-class="{active: $currentState.startsWith('app.advanced.shortLinks')}">
+								<a ui-sref="app.advanced.shortLinks">
+									<i class="fa fa-info"></i>
+									<span>Short Links</span>
+								</a>
+							</li>
+							<li ng-class="{active: $currentState.startsWith('app.trxn')}">
+								<a ui-sref="app.trxn"> <i class="fa fa-support"></i> <span>Transactional
+										Messaging</span>
+							</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div id="page-wrapper" class="gray-bg">
+			<div class="row border-bottom">
+				<nav class="navbar navbar-fixed-top white-bg"
+					role="navigation" style="margin-bottom: 0" ng-cloak>
+					<div class="navbar-header navbar__flex-menu">
+						<span minimaliza-sidebar></span>
+						<!-- <form role="search" class="navbar-form-custom"
+							action="search_results.html">
+							<div class="form-group">
+								<input type="text" placeholder="Search for something..."
+									class="form-control" name="top-search" id="top-search">
+							</div>
+						</form> -->
+					</div>
+					<ul class="nav navbar-top-links navbar-right">
+						<li>
+							<span class="font-bold m-r-sm text-white">
+								<span>Credit Balance:</span>
+								<span
+									ng-class="{'navbar__credits-warning' : loggedUser.balance < $minBalanceForWarning}">
+									{{loggedUser.baseCurrency.currencyName}} {{loggedUser.balance |
+									number : 2}} </span>
+							</span>
+						</li>
+						<li uib-dropdown ng-cloak>
+							<a class="count-info noselect"
+								style="min-height: 37px; cursor: pointer;" uib-dropdown-toggle>
+								<i class="fa fa-question-circle fa-lg" style="font-size: 1.5em;"></i>
+							</a>
+							<ul class="dropdown-alerts" uib-dropdown-menu
+								style="width: 200px;">
+								<li>
+									<a href="https://phonon.atlassian.net/wiki/spaces/PS/pages/176588478/Web+UI"
+										target="_blank">
+										<div>
+											<i class="fa fa-book font-size-fourteen m-r-xs fa-fw"></i>
+											<span>Documentation</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a
+										href="https://phonon.atlassian.net/wiki/spaces/PS/pages/14549395/FAQs"
+										target="_blank">
+										<div>
+											<i
+												class="fa fa-question-circle-o font-size-fourteen m-r-xs fa-fw"></i>
+											<span>FAQs</span>
+										</div>
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li uib-dropdown auto-close="outsideClick" ng-cloak>
+							<a class="count-info noselect"
+								style="min-height: 37px; cursor: pointer;" uib-dropdown-toggle>
+								<i class="fa fa-user-circle fa-lg"></i>
+								<span>{{loggedUser.firstName}}</span>
+								<i class="fa fa-caret-down m-l-xs"></i>
+							</a>
+							<ul class="dropdown-alerts" uib-dropdown-menu
+								style="width: 300px;">
+								<div class="flex">
+									<div class="flex">
+										<div class="p-w-xs navbar__flex">
+											<i class="fa fa-user-circle fa-2x"></i>
+										</div>
+									</div>
+									<div style="width: 100%">
+										<li class="userEmail">
+											<span class="ng-binding">{{loggedUser.email}}</span>
+										</li>
+										<li class=""><span class="ng-binding" style="font-size:11px">Valid Upto:
+												{{loggedUser.validity| date:"dd-MM-yyyy"}}</span></li>
+									</div>
+									<div class="userSettingButton">
+										<button class="p-w-xs btn btn-outline btn-link"
+											ui-sref="app.user.settings" href="#!/user/settings" style="">
+											<i class="fa fa-cog fa-2x"></i>
+										</button>
+									</div>
+								</div>
+								<!-- <li class="divider"></li>
+                                                                <li>
+                                                                        <a ui-sref="app.user.settings">
+                                                                                <div>
+                                                                                        <i class="fa fa-cog font-size-fourteen m-r-xs fa-fw"></i>
+                                                                                        <span>Settings</span>
+                                                                                </div>
+                                                                        </a>
+                                                                </li> -->
+								<li class="divider"></li>
+								<div class="userProjectData">
+									<li ng-if="!isSubordinateAccount"
+										ng-repeat="project in projects" class="ng-scope"
+										style="display: flex;"><a href="{{project.projectLink}}"
+										style="flex-grow: 1;" class="btn btn-outline btn-default">
+											<div class="userPRojectDataContent">
+												<i
+													class="fa {{project.projectIcon}} font-size-fourteen m-r-xs fa-fw"></i>
+												<span class="ng-binding">{{project.projectName}}</span>
+											</div>
+									</a></li>
+
+								</div>
+								<li ng-if="!isSubordinateAccount" class="divider"></li>
+								<div class="dropdown "
+									ng-class="{'userSubordinateData':subordinates.length  > 2}">
+									<li ng-if="!isSubordinateAccount"
+										ng-repeat="subordinate in subordinates"
+										class="ng-scope userSubordinateContent"><a
+										ng-click = "openSubordinatorsAccount(subordinate.$metadata.encodedUserToken)"
+										target="_blank"
+										style="flex-grow: 1; display: flex; justify-content: space-between; padding: 4px 10px;"
+										class="p-w-xs btn btn-default btn-outline">
+											<div class="userSubordinateContentInfo" style="">
+												<i class="fa fa-user-circle fa-2x p-w-xs"></i> <span
+													class="ng-binding"
+													style="font-size: 14px; font-weight: 500; margin-right: 2px; text-align: left">{{subordinate.firstName}}
+													{{subordinate.lastName}}</span>
+											</div>
+											<div class="userSubordinateContentInfoID">
+												<span style="font-style: italic;" class="text-muted">{{subordinate.id}}</span>
+											</div>
+
+									</a></li>
+								</div>
+
+								<li ng-if="isSubordinateAccount" class="ng-scope"
+									style="display: flex;">
+									<div class="alert alert-info m-xs"
+										style="flex-grow: 1; text-align: center;">{{message}}</div>
+								</li>
+								<li ng-if="isSubordinateAccount" class="ng-scope"
+									style="display: flex; justify-content: center; align-items: center;"></li>
+								<li ng-if="isSubordinateAccount" class="divider"></li>
+								<li ng-if="isSubordinateAccount" class="ng-scope"
+									style="display: flex;"><a href="/web-ui"
+									style="flex-grow: 1;" class="btn btn-outline btn-default">
+										<div
+											style="display: flex; justify-content: center; align-items: center;">
+											<i class="fa fa-chevron-circle-left fa-fw fa-lg m-r-xs"></i>
+											<span class="ng-binding">Back to My Account</span>
+										</div>
+								</a></li>
+
+								<li ng-if="!isSubordinateAccount" class="uSerDropDownLogout"
+									style="display: flex; align-content: center; justify-content: center;"><button
+										class="btn btn-danger" style="flex-grow: 1; width: 100%"
+										ng-click="logout()">Log Out</button></li>
+								<li ng-if="isSubordinateAccount" class="uSerDropDownLogout" style="margin-top:6px"><button
+										class="btn btn-danger" style="flex-grow: 1; width: 100%"
+										onClick="closeTab()">Close Account</button></li>		
+							</ul>
+						</li>
+						<li>
+							<a style="min-height: 37px" ng-click="logout()">
+								<i class="fa fa-sign-out"></i> Log out
+							</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<!-- <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-12 m-b-xxs">
+                    <strong>
+                        <div ncy-breadcrumb></div>
+                    </strong>
+                </div>
+            </div> -->
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="wrapper wrapper-content">
+						<div class="row">
+							<div ui-view></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="footer">
+				<div class="col-lg-11">
+					<copyright start="2017" message="All rights reserved."></copyright>
+				</div>
+				<div class="col-lg-1">
+					<span>Release 1.90.4</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- build:js scripts/vendor-@@rev.min.js -->
+	<!-- jQuery -->
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+	<script
+		src="bower_components/jquery-validation/dist/jquery.validate.js"></script>
+	<script src="bower_components/jquery-extendext/jquery-extendext.js"></script>
+	<!-- Bootstrap -->
+	<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<!-- AngularJS -->
+	<script src="bower_components/angular/angular.min.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+	<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+	<script src="bower_components/angular-resource/angular-resource.min.js"></script>
+	<script src="bower_components/angular-idle/angular-idle.js"></script>
+	<script
+		src="bower_components/angular-filter/dist/angular-filter.min.js"></script>
+	<script
+		src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script
+		src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="bower_components/angular-ui-validate/dist/validate.js"></script>
+	<script src="bower_components/oclazyload/dist/ocLazyLoad.min.js"></script>
+	<script
+		src="bower_components/angular-breadcrumb/dist/angular-breadcrumb.min.js"></script>
+	<script src="bower_components/chart.js/dist/Chart.min.js"></script>
+	<script
+		src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+	<!-- Javascript -->
+	<script src="bower_components/lodash/dist/lodash.min.js"></script>
+	<script src="bower_components/moment/min/moment.min.js"></script>
+	<script
+		src="bower_components/moment-timezone/builds/moment-timezone.min.js"></script>
+	<script
+		src="bower_components/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
+	<script src="bower_components/eventEmitter/EventEmitter.min.js"></script>
+	<script src="bower_components/ipaddr/lib/ipaddr.js"></script>
+	<!-- Plugins -->
+	<script src="bower_components/metismenu/dist/metisMenu.min.js"></script>
+	<script
+		src="bower_components/jquery-slimScroll/jquery.slimscroll.min.js"></script>
+	<script
+		src="bower_components/bootstrap-sweetalert/dist/sweetalert.min.js"></script>
+	<script src="bower_components/angular-sweetalert/SweetAlert.min.js"></script>
+	<script
+		src="bower_components/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
+	<script src="bower_components/ladda/dist/spin.min.js"></script>
+	<script src="bower_components/ladda/js/ladda.js"></script>
+	<script src="bower_components/angular-ladda/dist/angular-ladda.min.js"></script>
+	<script src="bower_components/pace/pace.min.js"></script>
+	<script src="bower_components/intl-tel-input/build/js/intlTelInput-jquery.js"></script>
+	<script
+		src="bower_components/angular-smart-table/dist/smart-table.min.js"></script>
+	<!-- endbuild -->
+	<!-- Application Intilization -->
+	<script type="text/javascript"  nonce="8IBTHwOdqNKAWeKl7plt8g==">
+		$.ajaxSetup({
+			headers : {
+				'Authorization' : 'Bearer ' + accessToken
+			}
+		})
+		var app = angular.module('app', [ 'ui.router', 'ui.bootstrap',
+				'ui.validate', 'oc.lazyLoad', 'ngIdle', 'ngSanitize',
+				'angular-ladda', 'angular.filter', 'ngResource',
+				'oitozero.ngSweetAlert', 'toastr', 'chart.js' ]);
+	</script>
+	<!-- build:js scripts/app-@@rev.min.js -->
+	<script src="bower_components/crypto-js/crypto-js.js"></script>
+	<script src="bower_components/crypto-js/aes.js"></script>
+	<script src="bower_components/crypto-js/pbkdf2.js"></script>
+	<script src="app/aesutil.js"></script>
+	<script src="app/utils.js"></script>
+	<script src="app/app.js"></script>
+	<script src="app/webui.js"></script>
+	<script src="app/directives.js"></script>
+	<script src="app/navigation.js"></script>
+	<script src="resources/theme/js/inspinia.js"></script>
+	<script src="modules/restriction/js/unauthorized.js"></script>
+	<script src="modules/users/js/users.js"></script>
+	<script src="modules/transactions/js/transaction.js"></script>
+	<script src="modules/e-commerce/js/ecommerce.js"></script>
+	<script src="modules/cdr/js/cdr.js"></script>
+	<script src="modules/did/js/did.js"></script>
+	<script src="modules/sms/js/sms.js"></script>
+	<script src="modules/whatsApp/js/whatsApp.js"></script>
+	<script src="modules/email/js/email.js"></script>
+	<script src="modules/flow-variable/js/flow-variable.js"></script>
+	<script src="modules/home/js/home.js"></script>
+	<script src="modules/home/js/homePageChartController.js"></script>
+	<script src="modules/advanced/js/agentUISetup.js"></script>
+	<script src="modules/advanced/js/cloud.js"></script>
+	<script src="modules/advanced/js/nlp.js"></script>
+	<script src="modules/grammar/js/grammar.js"></script>
+	<script src="modules/advanced/js/shortLinks.js"></script>
+	<script src="modules/advanced/js/webhook.js"></script>
+	<script src="modules/advanced/js/crm.js"></script>
+	<script src="modules/advanced/js/userSetup.js"></script>
+	<script src="modules/advanced/js/userRoleSetup.js"></script>
+	<script src="modules/advanced/js/zoho.js"></script>
+	<script src="modules/prompts/js/prompts.js"></script>
+	<script src="modules/storage/js/storage.js"></script>
+	<script src="modules/flows/js/flows.js"></script>
+	<script src="modules/flows/js/flow-chart.js"></script>
+	<script src="modules/subflows/js/subflows.js"></script>
+	<script src="modules/flows/js/widget.js"></script>
+	<script src="modules/flows/js/widgets.js"></script>
+	<script src="modules/flows/js/widget-flow-chart.js"></script>
+	<script src="modules/flows/js/templategenerator-click2call.js"></script>
+	<script src="modules/flows/js/templategenerator-click2call_v2.js"></script>
+	<script src="modules/flows/js/templategenerator-2fa.js"></script>
+	<script src="modules/whitelists/js/whitelist.js"></script>
+	<script src="modules/blacklists/js/blacklist.js"></script>
+	<script src="modules/agent-group/js/agent-group.js"></script>
+	<script src="modules/queues-agents/queues/js/queues.js"></script>
+	<script src="modules/queues-agents/pausecode/js/pausecode.js"></script>
+	<script src="modules/queues-agents/disposition/js/disposition.js"></script>
+	<script src="modules/notifications/labels/js/labels.js"></script>
+	<script src="modules/notifications/addressbook/js/addressbook.js"></script>
+	<script
+		src="modules/notifications/send-notifications/js/sendNotification.js"></script>
+	<script
+		src="modules/obddashboard/dashboard/js/obddashboard.js"></script>
+	<script	
+		src="bower_components/angularjs-dropdown-multiselect/dist/angularjs-dropdown-multiselect.min.js"></script>	
+	<script
+		src="modules/queues-agents/additional-fields/js/additionalFields.js"></script>
+	<script src="modules/queues-agents/agents/js/agents.js"></script>
+	<script src="modules/queues-agents/direct-dial/js/directdial.js"></script>
+	<script src="modules/reports/js/reports.js"></script>
+	<script src="modules/reports/js/emailReports.js"></script>
+	<script src="modules/reports/js/configureReports.js"></script>
+	<script src="modules/reports/js/downloadPreGeneratedReports.js"></script>
+	<script src="modules/reports/js/downloadReports.js"></script>
+	<!--<script src="modules/analytics/js/dashboard.js"></script>
+	<script src="modules/analytics/js/agent_details.js"></script>-->
+	<script src="modules/analytics/supervisor/js/dashboard.js"></script>
+	<script src="modules/advanced/js/activityLog.js"></script>
+	<script src="modules/transcription/js/transcription.js"></script>
+	<script src="modules/revokeCampaign/js/revokeCampaign.js"></script>
+	<!-- endbuild -->
+</body>
+
+</html>

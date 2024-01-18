@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Input Validation with ng-pattern</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="myController">
+  <form name="myForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" ng-model="user.username" ng-pattern="/^[a-zA-Z0-9_]*$/" required>
+
+    <div ng-show="myForm.username.$error.pattern">
+      The username can only contain letters, numbers, and underscores.
+    </div>
+
+    <button type="submit" ng-disabled="myForm.$invalid">Submit</button>
+  </form>
+</div>
+
+<script>
+  angular.module('myApp', [])
+    .controller('myController', function ($scope) {
+      $scope.user = {};
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Propogation</title>
+</head>
+<body>
+    <ul id="mainlist"> This is the main list
+        <li id="sublist1"> This is the sub lisr 1 </li>
+        <li id="sublist2"> This is the sub lisr 2</li>
+    </ul>
+
+</body>
+<script>
+    document.getElementById("mainlist").addEventListener("click", function(e){
+        console.log(e)
+        console.log("UL Main list clicked");
+    }, false)
+
+    document.getElementById("sublist1").addEventListener("click",function(e){
+        console.log("LI Sub list clicked");
+        e.stopPropagation();
+    }, false)
+</script>
+
+
+</html>

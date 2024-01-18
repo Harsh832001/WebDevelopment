@@ -1,0 +1,22 @@
+    body
+    {
+        background-color: rgb(216, 148, 103);
+    }
+
+    #first{
+        background-color: rgb(43, 112, 177);
+
+    }
+
+    .fourht
+    {
+        background-color: rgb(122, 24, 101);
+    }
+
+    table,th,td{
+        background-color: black;
+        color: aliceblue;
+        border: 5px solid;
+        width: 100%;
+        
+    }

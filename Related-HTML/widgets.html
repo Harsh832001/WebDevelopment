@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Example</title>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400" style="border: 1px solid #000;"></canvas>
+    <button id="saveButton">Save</button>
+    <script>
+        const canvas = document.getElementById("canvas");
+        const context = canvas.getContext("2d");
+        const saveButton = document.getElementById("saveButton");
+        let unsavedChanges = false;
+
+        // Add event listeners to detect changes on the canvas
+        canvas.addEventListener("click", () => {
+            unsavedChanges = true;
+        });
+
+        // Add an event listener to the save button
+        saveButton.addEventListener("click", () => {
+            unsavedChanges = false;
+        });
+
+        // Add an event listener to detect clicks outside the canvas
+        document.addEventListener("click", (event) => {
+            if (unsavedChanges) {
+                const isCanvasClicked = event.target === canvas || canvas.contains(event.target);
+                if (!isCanvasClicked) {
+                    // Show a pop-up message if there are unsaved changes
+                    const confirmation = window.confirm("You have unsaved changes. Do you want to leave the page?");
+                    if (!confirmation) {
+                        // If the user cancels, prevent navigating away from the page
+                        event.preventDefault();
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

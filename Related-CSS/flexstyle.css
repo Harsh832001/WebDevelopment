@@ -1,0 +1,45 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+
+ul{
+    text-align: right;
+    padding: 13px;
+}
+li{
+    display: inline;
+    padding: 11px;
+}
+nav{
+    background-color: black;
+    color: white;
+    height: 50px;
+}
+.image{
+    
+    background-image: url("download.jpeg");
+    background-repeat: repeat-x;
+    
+}
+p{
+    height: 170px;
+    width:100vw ;
+}
+.container{
+    display: flex;
+    background-color: blueviolet;
+
+}
+.container div{
+    background-color: burlywood;
+    align-items: center;
+    margin: 20px;
+    width: 100%;
+    padding: 10px;
+    
+}
+div{
+    height: 100%;
+}

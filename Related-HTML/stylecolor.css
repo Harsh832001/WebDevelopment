@@ -1,0 +1,24 @@
+.red{
+   /*background-color:red;*/
+   /*background-image: url("IMG-20220523-WA0006.jpg");*/
+   opacity: 2;
+}
+.blue{
+    background-color: rgb(134, 51, 211);
+}
+body{
+    /*background-image: url("download.jpeg");*/
+    background-repeat: space;
+    background-position: top;
+    margin: 15px 20px 10px 5px;
+    padding: 30px;
+    /*width: 20px;*/
+}
+
+nav{
+    background-color: lightpink;
+
+}
+p{
+    font-weight: 100;
+}

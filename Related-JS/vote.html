@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age for Vote</title>
+    <link rel="stylesheet" href="votecondition.js">
+</head>
+<body>
+    <h2> This is to check that whether are you eligible to vote or not?</h2>
+    <input id="age" value="18" />
+    <button onclick="Voterage()">Click Here</button>
+    <p id="demo"></p>
+    <script>
+        function Voterage(){
+    let age = document.getElementById("age").value;
+    let voteable = (age > 18) ? "You are eligilbe to " : "You are not eligible";
+    document.getElementById("demo").innerHTML = voteable + "vote";
+}
+    </script>
+</body>
+</html>
